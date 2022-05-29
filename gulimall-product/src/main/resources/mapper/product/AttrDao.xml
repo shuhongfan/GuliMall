@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.xunqi.gulimall.product.dao.AttrDao">
+<mapper namespace="com.shf.gulimall.product.dao.AttrDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.xunqi.gulimall.product.entity.AttrEntity" id="attrMap">
+    <resultMap type="com.shf.gulimall.product.entity.AttrEntity" id="attrMap">
         <result property="attrId" column="attr_id"/>
         <result property="attrName" column="attr_name"/>
         <result property="searchType" column="search_type"/>

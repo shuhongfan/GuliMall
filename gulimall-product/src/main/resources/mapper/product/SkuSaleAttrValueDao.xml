@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.xunqi.gulimall.product.dao.SkuSaleAttrValueDao">
+<mapper namespace="com.shf.gulimall.product.dao.SkuSaleAttrValueDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.xunqi.gulimall.product.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
+    <resultMap type="com.shf.gulimall.product.entity.SkuSaleAttrValueEntity" id="skuSaleAttrValueMap">
         <result property="id" column="id"/>
         <result property="skuId" column="sku_id"/>
         <result property="attrId" column="attr_id"/>
@@ -13,10 +13,10 @@
         <result property="attrSort" column="attr_sort"/>
     </resultMap>
 
-    <resultMap id="skuItemSaleAttrVo" type="com.xunqi.gulimall.product.vo.SkuItemSaleAttrVo">
+    <resultMap id="skuItemSaleAttrVo" type="com.shf.gulimall.product.vo.SkuItemSaleAttrVo">
         <result column="attr_id" property="attrId"></result>
         <result column="attr_name" property="attrName"></result>
-        <collection property="attrValues" ofType="com.xunqi.gulimall.product.vo.AttrValueWithSkuIdVo">
+        <collection property="attrValues" ofType="com.shf.gulimall.product.vo.AttrValueWithSkuIdVo">
             <result column="attr_value" property="attrValue"></result>
             <result column="sku_ids" property="skuIds"></result>
         </collection>

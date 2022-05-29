@@ -38,7 +38,7 @@ mybatis-plus:
       id-type: auto
 logging:
   level:
-    com.xunqi.gulimall: debug
+    com.shf.gulimall: debug
 
 #暴露所有端点
 management:

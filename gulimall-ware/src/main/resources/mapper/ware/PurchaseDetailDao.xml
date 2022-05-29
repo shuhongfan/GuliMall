@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.xunqi.gulimall.ware.dao.PurchaseDetailDao">
+<mapper namespace="com.shf.gulimall.ware.dao.PurchaseDetailDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.xunqi.gulimall.ware.entity.PurchaseDetailEntity" id="purchaseDetailMap">
+    <resultMap type="com.shf.gulimall.ware.entity.PurchaseDetailEntity" id="purchaseDetailMap">
         <result property="id" column="id"/>
         <result property="purchaseId" column="purchase_id"/>
         <result property="skuId" column="sku_id"/>

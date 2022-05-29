@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.xunqi.gulimall.member.dao.IntegrationChangeHistoryDao">
+<mapper namespace="com.shf.gulimall.member.dao.IntegrationChangeHistoryDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.xunqi.gulimall.member.entity.IntegrationChangeHistoryEntity" id="integrationChangeHistoryMap">
+    <resultMap type="com.shf.gulimall.member.entity.IntegrationChangeHistoryEntity" id="integrationChangeHistoryMap">
         <result property="id" column="id"/>
         <result property="memberId" column="member_id"/>
         <result property="createTime" column="create_time"/>

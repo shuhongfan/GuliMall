@@ -8,7 +8,7 @@
         <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.xunqi</groupId>
+    <groupId>com.shf.gulimall</groupId>
     <artifactId>gulimall-test-sso-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gulimall-test-sso-client</name>

@@ -55,7 +55,7 @@ mybatis-plus:
 
 logging:
   level:
-    com.xunqi.gulimall: error
+    com.shf.gulimall: debug
 
 
 #暴露所有端点

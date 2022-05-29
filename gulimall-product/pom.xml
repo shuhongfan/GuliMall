@@ -8,7 +8,7 @@
         <version>2.1.8.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.xunqi.gulimall</groupId>
+    <groupId>com.shf.gulimall</groupId>
     <artifactId>gulimall-product</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gulimall-product</name>
@@ -38,7 +38,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.xunqi.gulimall</groupId>
+            <groupId>com.shf.gulimall</groupId>
             <artifactId>gulimall-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

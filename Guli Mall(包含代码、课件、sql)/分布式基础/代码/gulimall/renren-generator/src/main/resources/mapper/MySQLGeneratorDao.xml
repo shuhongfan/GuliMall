@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="io.renren.dao.MySQLGeneratorDao">
+<mapper namespace="MySQLGeneratorDao">
 	<select id="queryList" resultType="map">
 		select table_name tableName, engine, table_comment tableComment, create_time createTime from information_schema.tables
 		where table_schema = (select database())
