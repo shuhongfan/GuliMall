@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <input type="text" v-model="num">
+        <button v-on:click="num++">点赞</button>
+        <button v-on:click="cancle">取消</button>
+        <h1> {{name}} ,非常帅，有{{num}}个人为他点赞{{hello()}}</h1>
+    </div>
+
+    <script src="./node_modules/vue/dist/vue.js"></script>
+
+    <script>
+        //1、vue声明式渲染
+        let vm = new Vue({
+            el: "#app",//绑定元素
+            data: {  //封装数据
+                name: "张三",
+                num: 1
+            },
+            methods:{  //封装方法
+                cancle(){
+                    this.num -- ;
+                },
+                hello(){
+                    return "1"
+                }
+            }
+        });
+
+        //2、双向绑定,模型变化，视图变化。反之亦然。
+
+        //3、事件处理
+
+        //v-xx：指令
+
+        //1、创建vue实例，关联页面的模板，将自己的数据（data）渲染到关联的模板，响应式的
+        //2、指令来简化对dom的一些操作。
+        //3、声明方法来做更复杂的操作。methods里面可以封装方法。
+
+    </script>
+</body>
+
+</html>

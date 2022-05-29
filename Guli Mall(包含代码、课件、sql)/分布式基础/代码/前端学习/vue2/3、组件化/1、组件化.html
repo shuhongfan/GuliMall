@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <button v-on:click="count++">我被点击了 {{count}} 次</button>
+
+        <counter></counter>
+        <counter></counter>
+        <counter></counter>
+        <counter></counter>
+        <counter></counter>
+
+        <button-counter></button-counter>
+    </div>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+
+
+    <script>
+        //1、全局声明注册一个组件
+        Vue.component("counter", {
+            template: `<button v-on:click="count++">我被点击了 {{count}} 次</button>`,
+            data() {
+                return {
+                    count: 1
+                }
+            }
+        });
+
+        //2、局部声明一个组件
+        const buttonCounter = {
+            template: `<button v-on:click="count++">我被点击了 {{count}} 次~~~</button>`,
+            data() {
+                return {
+                    count: 1
+                }
+            }
+        };
+
+        new Vue({
+            el: "#app",
+            data: {
+                count: 1
+            },
+            components: {
+                'button-counter': buttonCounter
+            }
+        })
+    </script>
+</body>
+
+</html>

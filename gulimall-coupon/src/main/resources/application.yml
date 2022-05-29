@@ -1,0 +1,41 @@
+server:
+  port: 6000
+
+spring:
+  application:
+    name: gulimall-coupon
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://192.168.120.20:3306/gulimall_sms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.120.20:8848
+
+    sentinel:
+      transport:
+        #配置sentinel dashboard地址
+        dashboard: 192.168.120.20:8080
+
+#开启feign对sentinel的支持
+feign:
+  sentinel:
+    enabled: true
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+
+  #\u8BBE\u7F6E\u5B9E\u4F53\u7C7B\u7684\u81EA\u589E\u4E3B\u952E
+  global-config:
+    db-config:
+      id-type: auto
+
+#暴露所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

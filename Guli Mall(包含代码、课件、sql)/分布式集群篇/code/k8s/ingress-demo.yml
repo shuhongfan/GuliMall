@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Ingress 
+metadata: 
+  name: web 
+spec:
+  rules:
+  - host: example.atguigu.com
+    http:
+      paths:
+        - backend:
+          serviceName: web
+          servicePort: 80

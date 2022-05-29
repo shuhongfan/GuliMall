@@ -1,0 +1,8 @@
+192.168.56.10 gulimall.com
+192.168.56.10 search.gulimall.com
+192.168.56.10 item.gulimall.com
+192.168.56.10 auth.gulimall.com
+192.168.56.10 cart.gulimall.com
+192.168.56.10 order.gulimall.com
+192.168.56.10 member.gulimall.com
+192.168.56.10 seckill.gulimall.com

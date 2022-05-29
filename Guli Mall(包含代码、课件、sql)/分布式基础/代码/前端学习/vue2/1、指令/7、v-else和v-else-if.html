@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button v-on:click="random=Math.random()">点我呀</button>
+        <span>{{random}}</span>
+
+        <h1 v-if="random>=0.75">
+            看到我啦？！ &gt;= 0.75
+        </h1>
+
+        <h1 v-else-if="random>=0.5">
+            看到我啦？！ &gt;= 0.5
+        </h1>
+
+        <h1 v-else-if="random>=0.2">
+            看到我啦？！ &gt;= 0.2
+        </h1>
+
+        <h1 v-else>
+            看到我啦？！ &lt; 0.2
+        </h1>
+
+    </div>
+
+
+    <script src="../node_modules/vue/dist/vue.js"></script>
+        
+    <script>         
+        let app = new Vue({
+            el: "#app",
+            data: { random: 1 }
+        })     
+    </script>
+</body>
+
+</html>
