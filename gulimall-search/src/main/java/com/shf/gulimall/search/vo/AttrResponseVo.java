@@ -57,4 +57,5 @@ public class AttrResponseVo {
 
     private Long[] catelogPath;
 
+
 }

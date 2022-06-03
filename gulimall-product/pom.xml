@@ -22,7 +22,6 @@
     </properties>
 
     <dependencies>
-
         <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
         <dependency>
             <groupId>com.aliyun.oss</groupId>

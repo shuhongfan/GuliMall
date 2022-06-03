@@ -169,10 +169,10 @@ public class SeckillServiceImpl implements SeckillService {
      * 获取到当前可以参加秒杀商品的信息
      * @return
      */
-    @SentinelResource(value = "getCurrentSeckillSkusResource",blockHandler = "blockHandler")
+    @SentinelResource(value = "getCurrentSeckillSkusResource",blockHandler = "blockHandler") // 自定义受保护的资源
     @Override
     public List<SeckillSkuRedisTo> getCurrentSeckillSkus() {
-
+//        自定义受保护的资源
         try (Entry entry = SphU.entry("seckillSkus")) {
             //1、确定当前属于哪个秒杀场次
             long currentTime = System.currentTimeMillis();
@@ -215,6 +215,11 @@ public class SeckillServiceImpl implements SeckillService {
         return null;
     }
 
+    /**
+     * 限流回调方法
+     * @param e
+     * @return
+     */
     public List<SeckillSkuRedisTo> blockHandler(BlockException e) {
 
         log.error("getCurrentSeckillSkusResource被限流了,{}",e.getMessage());

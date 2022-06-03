@@ -19,7 +19,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @EnableConfigurationProperties(CacheProperties.class)
 @Configuration
-@EnableCaching
+@EnableCaching  // 开启缓存
 public class MyCacheConfig {
 
     // @Autowired

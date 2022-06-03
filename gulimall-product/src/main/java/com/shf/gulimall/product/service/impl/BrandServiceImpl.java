@@ -10,10 +10,12 @@ import com.shf.gulimall.product.entity.BrandEntity;
 import com.shf.gulimall.product.service.BrandService;
 import com.shf.gulimall.product.service.CategoryBrandRelationService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 
@@ -54,6 +56,13 @@ public class BrandServiceImpl extends ServiceImpl<BrandDao, BrandEntity> impleme
 
             //TODO 更新其他关联
         }
+    }
+
+    @Override
+    @Cacheable(value = "brand",key = "'brandinfo:'+#root.args[0]")
+    public List<BrandEntity> getBrandsByIds(List<Long> brandIds) {
+        return baseMapper.selectList(
+                new QueryWrapper<BrandEntity>().in("brand_id",brandIds));
     }
 
 }

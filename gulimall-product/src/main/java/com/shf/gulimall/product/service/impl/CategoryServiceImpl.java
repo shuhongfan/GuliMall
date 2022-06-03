@@ -18,6 +18,7 @@ import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -145,8 +146,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     //         @CacheEvict(value = "category",key = "'getLevel1Categorys'"),
     //         @CacheEvict(value = "category",key = "'getCatalogJson'")
     // })
-    @CacheEvict(value = "category",allEntries = true)       //删除某个分区下的所有数据
+    @CacheEvict(value = "category",allEntries = true)   // 缓存清除 删除某个分区下的所有数据
     @Transactional(rollbackFor = Exception.class)
+//    @CachePut  // 缓存修改 双写模式
     @Override
     public void updateCascade(CategoryEntity category) {
 
@@ -186,7 +188,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
      *
      * 4、Spring-Cache的不足之处：
      *  1）、读模式
-     *      缓存穿透：查询一个null数据。解决方案：缓存空数据
+     *      缓存穿透：查询一个null数据。解决方案：缓存空数据 cache-null-values=true
      *      缓存击穿：大量并发进来同时查询一个正好过期的数据。解决方案：加锁 ? 默认是无加锁的;使用sync = true来解决击穿问题
      *      缓存雪崩：大量的key同时过期。解决：加随机时间。加上过期时间
      *  2)、写模式：（缓存与数据库一致）
@@ -258,6 +260,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }));
 
         return parentCid;
+    }
+
+    @Override
+    public List<CategoryEntity> getCategoryByName(Long catId) {
+        CategoryEntity categoryEntity = this.baseMapper.selectById(catId);
+        QueryWrapper<CategoryEntity> queryWrapper = new QueryWrapper<CategoryEntity>()
+                .eq("cat_level",3)
+                .eq("name", categoryEntity.getName());
+        return this.baseMapper.selectList(queryWrapper);
     }
 
     //TODO 产生堆外内存溢出OutOfDirectMemoryError:

@@ -19,11 +19,14 @@ import java.io.IOException;
  * @createTime: 2020-07-13 11:30
  **/
 
-@Configuration
+//@Configuration
 public class GulimallSeckillSentinelConfig {
 
     public GulimallSeckillSentinelConfig() {
 
+        /**
+         * 自定义sentinel错误返回结果
+         */
         WebCallbackManager.setUrlBlockHandler(new UrlBlockHandler() {
             @Override
             public void blocked(HttpServletRequest request, HttpServletResponse response, BlockException ex) throws IOException {

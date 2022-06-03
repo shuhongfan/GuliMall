@@ -5,7 +5,9 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.qiniu.util.Auth;
 import com.shf.common.utils.R;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +26,7 @@ import java.util.Map;
 @RestController
 public class OssController {
 
-    @RequestMapping("/oss/policy")
+//    @RequestMapping("/oss/policy")
     public R policy() {
 
         //https://gulimall-clouds.oss-cn-beijing.aliyuncs.com/iqiyi.png
@@ -76,4 +78,22 @@ public class OssController {
         return R.ok().put("data",respMap);
     }
 
+
+
+    @Value("${qiniu.ak}")
+    private String QINIU_AK;
+    @Value("${qiniu.sk}")
+    private String QINIU_SK;
+    @Value("${qiniu.bucket}")
+    private String QINIU_BUCKET;
+
+    //获取七牛云上传token
+    @RequestMapping("/oss/policy")
+    public R getUpToken() {
+        Auth auth = Auth.create(QINIU_AK, QINIU_SK);
+        String upToken = auth.uploadToken(QINIU_BUCKET);
+        LinkedHashMap<String, String> respMap = new LinkedHashMap<String, String>();
+        respMap.put("upToken", upToken);
+        return R.ok().put("data",respMap);
+    }
 }

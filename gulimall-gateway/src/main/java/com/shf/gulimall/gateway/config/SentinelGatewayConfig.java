@@ -22,7 +22,7 @@ public class SentinelGatewayConfig {
 
     public SentinelGatewayConfig() {
         GatewayCallbackManager.setBlockHandler(new BlockRequestHandler() {
-            //网关限流了请求，就会调用此回调
+            //网关限流了请求，就会调用此回调  webflex
             @Override
             public Mono<ServerResponse> handleRequest(ServerWebExchange exchange, Throwable t) {
 

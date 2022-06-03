@@ -16,12 +16,12 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.120.20:8848
+        server-addr: 127.0.0.1:8848
 
     sentinel:
       transport:
         #配置sentinel dashboard地址
-        dashboard: 192.168.120.20:8080
+        dashboard: 192.168.120.20:8858
 
   redis:
     host: 192.168.120.20

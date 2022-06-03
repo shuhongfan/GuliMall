@@ -783,9 +783,9 @@
                 <h3><b>手机</b><em>商品筛选</em></h3>
                 <div class="st-ext">共&nbsp;<span>10135</span>个商品</div>
             </div>
-            <div class="JD_nav_logo">
+            <div class="JD_nav_logo"  th:with="brandid=${param.brandId}">
                 <!--品牌-->
-                <div class="JD_nav_wrap">
+                <div class="JD_nav_wrap" th:if="${#strings.isEmpty(brandid)}">
                     <div class="sl_key">
                         <span><b>品牌：</b></span>
                     </div>
@@ -794,7 +794,7 @@
                             <ul>
                                 <li th:each="brand : ${result.brands}">
                                     <a href="#"
-                                       th:href="${'javascript:searchProducts(&quot;brandId&quot;,'+brand.brandId+')'}">
+                                       th:href="${'javascript:searchProducts(&quot;brandId&quot;,'+brand.brandId+',true)'}">
                                         <img th:src="${brand.brandImg}" alt="">
                                         <div th:text="${brand.brandName}">
                                             华为(HUAWEI)
@@ -819,7 +819,7 @@
                 </div>
 
                 <!--分类-->
-                <div class="JD_pre">
+                <div class="JD_pre" th:if="${#strings.isEmpty(param.catalog3Id)}">
                     <div class="sl_key">
                         <span><b>分类：</b></span>
                     </div>
@@ -827,7 +827,7 @@
                         <ul>
                             <li th:each="catalog : ${result.catalogs}">
                                 <a href="/static/search/#"
-                                   th:href="${'javascript:searchProducts(&quot;catalog3Id&quot;,'+catalog.catalogId+')'}"
+                                   th:href="${'javascript:searchProducts(&quot;catalog3Id&quot;,'+catalog.catalogId+',true)'}"
                                    th:text="${catalog.catalogName}">5.56英寸及以上
 
                                 </a>
@@ -849,7 +849,7 @@
                 </div>
 
                 <!--其它的所有需要展示的属性-->
-                <div class="JD_pre" th:each="attr : ${result.attrs}">
+                <div class="JD_pre" th:each="attr : ${result.attrs}" th:if="${!#lists.contains(result.attrIds,attr.attrId)}">
                     <div class="sl_key">
                         <span th:text="${attr.attrName}">屏幕尺寸：</span>
                     </div>
@@ -857,7 +857,7 @@
                         <ul>
                             <li th:each="attrValue : ${attr.attrValue}">
                                 <a href="/static/search/#"
-                                   th:href="${'javascript:searchProducts(&quot;attrs&quot;,&quot;'+attr.attrId+'_'+attrValue+'&quot;)'}"
+                                   th:href="${'javascript:searchProducts(&quot;attrs&quot;,&quot;'+attr.attrId+'_'+attrValue+'&quot;,true)'}"
                                    th:text="${attrValue}">5.56英寸及以上
                                 </a>
                             </li>
@@ -2022,7 +2022,12 @@
 
     function searchProducts(name, value) {
         //原來的页面
-        location.href = replaceParamVal(location.href,name,value,true)
+        location.href = replaceParamVal(location.href,name,value,false)
+    }
+
+    function searchProducts(name, value,append) {
+        //原來的页面
+        location.href = replaceParamVal(location.href,name,value,append)
     }
 
 
@@ -2037,7 +2042,11 @@
             //替换pageNum
             location.href = replaceParamVal(href, "pageNum", pn);
         } else {
-            location.href = location.href + "&pageNum=" + pn;
+            if (href.indexOf("?") == -1) {
+                location.href = location.href + "?pageNum=" + pn;
+            } else {
+                location.href = location.href + "&pageNum=" + pn;
+            }
         }
         return false;
     })
@@ -2119,6 +2128,16 @@
         }
         return false;
     });
+
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+    }
 
 
 </script>

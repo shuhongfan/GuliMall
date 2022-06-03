@@ -28,9 +28,6 @@
         <module>gulimall-third-party</module>
         <module>gulimall-ware</module>
         <module>gulimall-search</module>
-        <module>gulimall-common</module>
-        <module>gulimall-third-party</module>
-        <module>gulimall-search</module>
         <module>gulimall-auth-server</module>
         <module>gulimall-cart</module>
         <module>gulimall-test-sso-client</module>

@@ -4,7 +4,7 @@ spring:
     sentinel:
       transport:
         #配置sentinel dashboard地址
-        dashboard: 192.168.120.20:8080
+        dashboard: 192.168.120.20:8858
 
     gateway:
       routes:

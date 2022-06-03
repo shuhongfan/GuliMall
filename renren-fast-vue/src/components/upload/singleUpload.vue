@@ -1,7 +1,7 @@
 <template> 
   <div>
     <el-upload
-      action="http://gulimall-clouds.oss-cn-beijing.aliyuncs.com"
+      action="http://up-z2.qiniu.com"
       :data="dataObj"
       list-type="picture"
       :multiple="false" :show-file-list="showFileList"
@@ -61,9 +61,10 @@
           ossaccessKeyId: '',
           dir: '',
           host: '',
+          token:''
           // callback:'',
         },
-        dialogVisible: false
+        dialogVisible: false,
       };
     },
     methods: {
@@ -81,12 +82,14 @@
         return new Promise((resolve, reject) => {
           policy().then(response => {
             console.log("响应的数据",response);
-            _self.dataObj.policy = response.data.policy;
-            _self.dataObj.signature = response.data.signature;
-            _self.dataObj.ossaccessKeyId = response.data.accessid;
-            _self.dataObj.key = response.data.dir +getUUID()+'_${filename}';
-            _self.dataObj.dir = response.data.dir;
-            _self.dataObj.host = response.data.host;
+            // _self.dataObj.policy = response.data.policy;
+            // _self.dataObj.signature = response.data.signature;
+            // _self.dataObj.ossaccessKeyId = response.data.accessid;
+            // _self.dataObj.key = response.data.dir +getUUID()+'_${filename}';
+            _self.dataObj.key = getUUID()+'_'+file.name;
+            // _self.dataObj.dir = response.data.dir;
+            // _self.dataObj.host = response.data.host;
+            _self.dataObj.token = response.data.upToken;
             console.log("响应的数据222。。。",_self.dataObj);
             resolve(true)
           }).catch(err => {
@@ -98,7 +101,8 @@
         console.log("上传成功...")
         this.showFileList = true;
         this.fileList.pop();
-        this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace("${filename}",file.name) });
+        // this.fileList.push({name: file.name, url: this.dataObj.host + '/' + this.dataObj.key.replace("${filename}",file.name) });
+        this.fileList.push({name: file.name, url: "http://rcsucl8tn.hn-bkt.clouddn.com/"+this.dataObj.key });
         this.emitInput(this.fileList[0].url);
       }
     }

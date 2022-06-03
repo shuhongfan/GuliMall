@@ -13,23 +13,29 @@ public class ThreadTest {
     public static ExecutorService executor = Executors.newFixedThreadPool(10);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        // System.out.println("main......start.....");
-        // Thread thread = new Thread01();
-        // thread.start();
-        // System.out.println("main......end.....");
+//        1. 继承Thread  extends Thread
+//         System.out.println("main......start.....");
+//         Thread thread = new Thread01();
+//         thread.start();
+//         System.out.println("main......end.....");
 
-        // Runable01 runable01 = new Runable01();
-        // new Thread(runable01).start();
+//        2. 实现Runnable接口 implements Runnable
+//         Runable01 runable01 = new Runable01();
+//         new Thread(runable01).start();
 
-        // FutureTask<Integer> futureTask = new FutureTask<>(new Callable01());
-        // new Thread(futureTask).start();
-        // System.out.println(futureTask.get());
+//        3.实现Callable接口  implements Callable<Integer>
+//         FutureTask<Integer> futureTask = new FutureTask<>(new Callable01());
+//         new Thread(futureTask).start();
+//       阻塞  等待整个线程执行完成，获取返回结果
+//        Integer integer = futureTask.get();
+//        System.out.println("main...end..."+integer);
 
-        // service.execute(new Runable01());
-        // Future<Integer> submit = service.submit(new Callable01());
-        // submit.get();
+//        我们以后在业务代码里面，以上三种启动线程的方式都不用。【将所有的线程异步任务都交给线程池执行】
+//         service.execute(new Runable01());
+//         Future<Integer> submit = service.submit(new Callable01());
+//         submit.get();
 
-        System.out.println("main......start.....");
+//        System.out.println("main......start.....");
         // CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
         //     System.out.println("当前线程：" + Thread.currentThread().getId());
         //     int i = 10 / 2;
@@ -79,16 +85,16 @@ public class ThreadTest {
          * 3、thenApplyAsync：能接受上一步结果，有返回值
          *
          */
-        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
-            System.out.println("当前线程：" + Thread.currentThread().getId());
-            int i = 10 / 2;
-            System.out.println("运行结果：" + i);
-            return i;
-        }, executor).thenApplyAsync(res -> {
-            System.out.println("任务2启动了..." + res);
-            return "Hello" + res;
-        }, executor);
-        System.out.println("main......end....." + future.get());
+//        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+//            System.out.println("当前线程：" + Thread.currentThread().getId());
+//            int i = 10 / 2;
+//            System.out.println("运行结果：" + i);
+//            return i;
+//        }, executor).thenApplyAsync(res -> {
+//            System.out.println("任务2启动了..." + res);
+//            return "Hello" + res;
+//        }, executor);
+//        System.out.println("main......end....." + future.get());
 
     }
 

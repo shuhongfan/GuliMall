@@ -72,7 +72,8 @@ public class IndexController {
         myLock.lock();      //阻塞式等待。默认加的锁都是30s
         //1）、锁的自动续期，如果业务超长，运行期间自动锁上新的30s。不用担心业务时间长，锁自动过期被删掉
         //2）、加锁的业务只要运行完成，就不会给当前锁续期，即使不手动解锁，锁默认会在30s内自动过期，不会产生死锁问题
-        // myLock.lock(10,TimeUnit.SECONDS);   //10秒钟自动解锁,自动解锁时间一定要大于业务执行时间
+
+//         myLock.lock(10,TimeUnit.SECONDS);   //10秒钟自动解锁,自动解锁时间一定要大于业务执行时间
         //问题：在锁时间到了以后，不会自动续期
         //1、如果我们传递了锁的超时时间，就发送给redis执行脚本，进行占锁，默认超时就是 我们制定的时间
         //2、如果我们指定锁的超时时间，就使用 lockWatchdogTimeout = 30 * 1000 【看门狗默认时间】
@@ -136,7 +137,12 @@ public class IndexController {
             rLock.lock();
             ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
             s = ops.get("writeValue");
-            try { TimeUnit.SECONDS.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -155,7 +161,7 @@ public class IndexController {
     @GetMapping(value = "/park")
     @ResponseBody
     public String park() throws InterruptedException {
-
+//        分布式信号量
         RSemaphore park = redisson.getSemaphore("park");
         park.acquire();     //获取一个信号、获取一个值,占一个车位
         boolean flag = park.tryAcquire();
@@ -182,7 +188,7 @@ public class IndexController {
      * 放假、锁门
      * 1班没人了
      * 5个班，全部走完，我们才可以锁大门
-     * 分布式闭锁
+     * 分布式【闭锁】
      */
 
     @GetMapping(value = "/lockDoor")
@@ -191,7 +197,7 @@ public class IndexController {
 
         RCountDownLatch door = redisson.getCountDownLatch("door");
         door.trySetCount(5);
-        door.await();       //等待闭锁完成
+        door.await();       //等待【闭锁】完成
 
         return "放假了...";
     }
