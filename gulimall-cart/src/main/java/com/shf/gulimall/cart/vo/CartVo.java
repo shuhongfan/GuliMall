@@ -68,6 +68,11 @@ public class CartVo {
     }
 
 
+    /**
+     *  重写计算属性
+     *      需要计算的属性，必须重写他的get方法，保证每次获取属性都会重新计算
+     * @return
+     */
     public BigDecimal getTotalAmount() {
         BigDecimal amount = new BigDecimal("0");
         // 计算购物项总价

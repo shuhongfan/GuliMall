@@ -25,7 +25,9 @@ import static com.shf.common.constant.CartConstant.TEMP_USER_COOKIE_TIMEOUT;
 
 public class CartInterceptor implements HandlerInterceptor {
 
-
+    /**
+     * ThreadLocal  同一个线程共享数据
+     */
     public static ThreadLocal<UserInfoTo> toThreadLocal = new ThreadLocal<>();
 
     /***
@@ -37,7 +39,8 @@ public class CartInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object handler) throws Exception {
 
         UserInfoTo userInfoTo = new UserInfoTo();
 
@@ -50,6 +53,9 @@ public class CartInterceptor implements HandlerInterceptor {
             userInfoTo.setUserId(memberResponseVo.getId());
         }
 
+        /**
+         * 获取所有cookie
+         */
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
@@ -63,20 +69,20 @@ public class CartInterceptor implements HandlerInterceptor {
             }
         }
 
-        //如果没有临时用户一定分配一个临时用户
+        //如果没有临时用户一定分配一个临时用户  生成UUID
         if (StringUtils.isEmpty(userInfoTo.getUserKey())) {
             String uuid = UUID.randomUUID().toString();
             userInfoTo.setUserKey(uuid);
         }
 
-        //目标方法执行之前
+        //目标方法执行之前  使用ThreadLocal共享数据
         toThreadLocal.set(userInfoTo);
         return true;
     }
 
 
     /**
-     * 业务执行之后，分配临时用户来浏览器保存
+     * 业务执行之后，分配临时用户，让浏览器保存
      * @param request
      * @param response
      * @param handler
@@ -89,7 +95,7 @@ public class CartInterceptor implements HandlerInterceptor {
         //获取当前用户的值
         UserInfoTo userInfoTo = toThreadLocal.get();
 
-        //如果没有临时用户一定保存一个临时用户
+        //如果没有临时用户一定保存一个临时用户  放cookie
         if (!userInfoTo.getTempUser()) {
             //创建一个cookie
             Cookie cookie = new Cookie(TEMP_USER_COOKIE_NAME, userInfoTo.getUserKey());

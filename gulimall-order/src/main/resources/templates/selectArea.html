@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/order/address/style.css">
+    <script src="/static/order/address/city.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/static/order/pay/css/style.css">
+    <script src="/static/order/pay/js/jquery-3.1.1.min.js" charset="utf-8"></script>
+    <style>
+        fieldset{
+            width: 700px;
+        }
+        label{
+            width: 250px;
+            display: inline-block;
+            text-align: right;
+            height: 40px;
+            line-height: 40px;
+        }
+        button{
+            width: 80px;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            outline: none;
+            background-color: #E2383B;
+            margin: 20px 40%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="One_Jdbox">
+        <div class="Jdbox_head">
+            <img src="/static/order/pay/img/logo1.jpg" alt=""><span class="bank">添加收货地址</span>
+            <ul>
+                <li><span>[[${session.loginUser.nickname}]]</span><span>退出</span></li>
+                <li><a href="http://order.gulimall.com/list.html">我的订单</a></li>
+                <li>支付帮助</li>
+            </ul>
+        </div>
+        <p style="color: transparent">sdfsdfdsfsd</p>
+        <fieldset style="margin: 20px auto">
+            <legend>请选中省市县/区，并点击确认</legend>
+            <label for="addr-show02">您选择的是：
+                <input type="text" id="addr-show02">
+            </label>
+            <div id="addr-choice">
+                <ul id="title-wrap">
+                    <li value="0">省份</li>
+                    <li value="1">城市</li>
+                    <li value="2">县区</li>
+                </ul>
+                <div id="show-panel">
+                    <ul id="addr-wrap">
+                    </ul>
+                </div>
+            </div>
+            <button type="button" class="btn met2">确定</button>
+        </fieldset>
+        <fieldset  style="margin: 20px auto">
+            <legend>请填写收货人信息：</legend>
+            <div>
+                <label>收货人：</label>
+                <input type="text" id="name">
+            </div>
+            <div>
+                <label>手机号：</label>
+                <input type="text" id="phone">
+            </div>
+            <div>
+                <label>详细地址：</label>
+                <textarea cols="30" rows="5" type="text" id="detail_address"></textarea>
+            </div>
+            <button type="button" onclick="addArea()">确定</button>
+        </fieldset>
+        <div class="Jd_foots">
+            <p>
+                <span>Copyright @2004-2017 谷粒学院gulimall.com 版权所有</span>
+                <span>
+            <img src="/static/order/pay/img/foots.png" alt="">
+          </span>
+            </p>
+        </div>
+    </div>
+
+</div>
+<script>
+    var addrShow02 = document.getElementById('addr-show02');  //最终地址显示框
+    var titleWrap = document.getElementById('title-wrap').getElementsByTagName('LI');
+    var addrWrap = document.getElementById('addr-wrap');   //省市区显示模块
+    var btn2 = document.getElementsByClassName('met2')[0];  //确定按钮
+
+
+
+    var current2 = {
+        prov: '',
+        city: '',
+        country: '',
+        provVal: '',
+        cityVal: '',
+        countryVal: ''
+    };
+
+    /*自动加载省份列表*/
+    window.onload = showProv2();
+
+    function showProv2() {
+        addrWrap.innerHTML = '';
+        /*addrShow02.value = '';*/
+        btn2.disabled = true;
+        titleWrap[0].className = 'titleSel';
+        var len = provice.length;
+        for (var i = 0; i < len; i++) {
+            var provLi = document.createElement('li');
+            provLi.innerText = provice[i]['name'];
+            provLi.index = i;
+            addrWrap.appendChild(provLi);
+        }
+    }
+
+    /*************************需要给动态生成的li绑定点击事件********************** */
+    addrWrap.onclick = function (e) {
+        var n;
+        var e = e || window.event;
+        var target = e.target || e.srcElement;
+        if (target && target.nodeName == 'LI') {
+            /*先判断当前显示区域显示的是省市区的那部分*/
+            for (var z = 0; z < 3; z++) {
+                if (titleWrap[z].className == 'titleSel')
+                    n = z;
+            }
+            /*显示的处理函数*/
+            switch (n) {
+                case 0:
+                    showCity2(target.index);
+                    break;
+                case 1:
+                    showCountry2(target.index);
+                    break;
+                case 2:
+                    selectCountry(target.index);
+                    break;
+                default:
+                    showProv2();
+            }
+        }
+    };
+
+    /*选择省份之后显示该省下所有城市*/
+    function showCity2(index) {
+        addrWrap.innerHTML = '';
+        current2.prov = index;
+        current2.provVal = provice[index].name;
+        titleWrap[0].className = '';
+        titleWrap[1].className = 'titleSel';
+        var cityLen = provice[index].city.length;
+        for (var j = 0; j < cityLen; j++) {
+            var cityLi = document.createElement('li');
+            cityLi.innerText = provice[index].city[j].name;
+            cityLi.index = j;
+            addrWrap.appendChild(cityLi);
+        }
+    }
+
+    /*选择城市之后显示该城市下所有县区*/
+    function showCountry2(index) {
+        addrWrap.innerHTML = '';
+        current2.city = index;
+        current2.cityVal = provice[current2.prov].city[index].name;
+        titleWrap[1].className = '';
+        titleWrap[2].className = 'titleSel';
+        var countryLen = provice[current2.prov].city[index].districtAndCounty.length;
+        if (countryLen == 0) {
+            addrShow02.value = current2.provVal + '-' + current2.cityVal;
+        }
+        for (var k = 0; k < countryLen; k++) {
+            var cityLi = document.createElement('li');
+            cityLi.innerText = provice[current2.prov].city[index].districtAndCounty[k];
+            cityLi.index = k;
+            addrWrap.appendChild(cityLi);
+        }
+    }
+
+    /*选中具体的县区*/
+    function selectCountry(index) {
+        btn2.disabled = false;
+        current2.country = index;
+        addrWrap.getElementsByTagName('li')[index].style.backgroundColor = '#23B7E5';
+        current2.countryVal = provice[current2.prov].city[current2.city].districtAndCounty[index];
+    }
+
+    /*点击确定后恢复成初始状态，且将所选地点显示在输入框中*/
+    btn2.onclick = function () {
+        addrShow02.value = current2.provVal + ' ' + current2.cityVal + ' ' + current2.countryVal;
+        addrWrap.getElementsByTagName('li')[current2.country].style.backgroundColor = '';
+    };
+
+    /*分别点击省市区标题的处理函数*/
+    document.getElementById('title-wrap').onclick = function (e) {
+        var e = e || window.event;
+        var target = e.target || e.srcElement;
+        if (target && target.nodeName == 'LI') {
+            for (var z = 0; z < 3; z++) {
+                titleWrap[z].className = '';
+            }
+            target.className = 'titleSel';
+            if (target.value == '0') {
+                showProv2();
+            } else if (target.value == '1') {
+                showCity2(current2.prov);
+            } else {
+                showCountry2(current2.city);
+            }
+        }
+    };
+
+    function addArea() {
+        let data= {
+            memberId: [[${session.loginUser.id}]],
+            province: current2.provVal,
+            city: current2.cityVal,
+            region: current2.countryVal,
+            name: $("#name").val(),
+            phone: $("#phone").val(),
+            detailAddress: $("#detail_address").val(),
+        }
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            url: "/addLocation",
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function(result) {
+                console.log(result)
+                if(result.code == 0) {
+                    alert('添加收货地址成功！');
+                    window.location.href='/toTrade'
+                } else {
+                    alert('添加收货地址失败！');
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -59,14 +59,15 @@
             </ul>
             `
             <ul class="header_ul_right">
-                <li style="border: 0;">
-                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html"
-                       class="aa">你好，请登录</a>
+                <li style="width: 100px;">
                     <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
+                </li>
+                <li th:if="${session.loginUser == null}">
+                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
                 </li>
                 <li>
-                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html"
-                       style="color: red;">免费注册</a>
+                    <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
                 </li>
                 <li><a href="http://member.gulimall.com/memberOrder.html" class="aa">我的订单</a> |</li>
                 <li class="jingdong"><a href="/static/item/javascript:;">我的京东</a><span
@@ -264,7 +265,7 @@
     <nav>
         <div class="nav_min">
             <div class="nav_top">
-                <div class="nav_top_one"><a href="http://gulimall.com"><img src="/static/item/img/111.png"/></a></div>
+                <div class="nav_top_one"><a href="http://gulimall.com"><img src="/static/search/image/logo1.jpg"/></a></div>
                 <div class="nav_top_two"><input type="text"/>
                     <button>搜索</button>
                 </div>
@@ -854,19 +855,19 @@
         <div class="allquanbushop">
             <ul class="shopjieshao">
                 <li class="jieshoa" style="background: #e4393c;">
-                    <a href="/static/item/##" style="color: white;">商品介绍</a>
+                    <a style="color: white;">商品介绍</a>
                 </li>
                 <li class="baozhuang">
-                    <a href="/static/item/##">规格与包装</a>
+                    <a>规格与包装</a>
                 </li>
                 <li class="baozhang">
-                    <a href="/static/item/##">售后保障</a>
+                    <a>售后保障</a>
                 </li>
                 <li class="pingjia">
-                    <a href="/static/item/##">商品评价(4万+)</a>
+                    <a>商品评价(4万+)</a>
                 </li>
                 <li class="shuoming">
-                    <a href="/static/item/##">预约说明</a>
+                    <a>预约说明</a>
                 </li>
 
             </ul>
@@ -875,19 +876,19 @@
             </button>
             <ul class="shopjieshaos posi" style="display: none;">
                 <li class="jieshoa" style="background: #e4393c;">
-                    <a href="/static/item/#li1" style="color: white;">商品介绍</a>
+                    <a style="color: white;">商品介绍</a>
                 </li>
                 <li class="baozhuang">
-                    <a href="/static/item/#li2">规格与包装</a>
+                    <a>规格与包装</a>
                 </li>
                 <li class="baozhang">
-                    <a href="/static/item/#li3">售后保障</a>
+                    <a>售后保障</a>
                 </li>
                 <li class="pingjia">
-                    <a href="/static/item/#li4">商品评价(4万+)</a>
+                    <a>商品评价(4万+)</a>
                 </li>
                 <li class="shuoming">
-                    <a href="/static/item/#li5">预约说明</a>
+                    <a>预约说明</a>
                 </li>
             </ul>
 
@@ -936,37 +937,9 @@
                             <!--									</table>-->
                             <img class="xiaoguo" th:src="${descp}"
                                  th:each="descp : ${#strings.listSplit(item.desc.decript,',')}"/>
-                            <!--                            <div class="guiGebox guiGebox1">-->
-                            <!--                                <div class="guiGe">-->
-                            <!--                                    <h3 th:text="guige.groupName"></h3>-->
-                            <!--                                    <dl>-->
-                            <!--                                        <dt>品牌</dt>-->
-                            <!--                                        <dd>华为(HUAWEI)</dd>-->
-                            <!--                                        <dt>型号</dt>-->
-                            <!--                                        <dd class="Ptable-tips">-->
-                            <!--                                            <a href="/static/item/#"><i>？</i></a>-->
-                            <!--                                        </dd>-->
-                            <!--                                        <dd>ALP-AL00</dd>-->
-                            <!--                                        <dt>入网型号</dt>-->
-                            <!--                                        <dd class="Ptable-tips">-->
-                            <!--                                            <a href="/static/item/#"><i>？</i></a>-->
-                            <!--                                        </dd>-->
-                            <!--                                        <dd>ALP-AL00</dd>-->
-                            <!--                                        <dt>上市年份</dt>-->
-                            <!--                                        <dd>2017年</dd>-->
-                            <!--                                        <dt>上市时间</dt>-->
-                            <!--                                        <dd>10月</dd>-->
-                            <!--                                    </dl>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="package-list">-->
-                            <!--                                    <h3>包装清单</h3>-->
-                            <!--                                    <p>手机（含内置电池） X 1、5A大电流华为SuperCharge充电器X 1、5A USB数据线 X 1、半入耳式线控耳机 X 1、快速指南X 1、三包凭证 X-->
-                            <!--                                        1、取卡针 X 1、保护壳 X 1</p>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
+
                         </div>
                     </li>
-                    <li class="baozhuang actives" id="li2">
                     <li class="baozhuang actives" id="li2">
                         <div class="guiGebox">
                             <div class="guiGe" th:each="group : ${item.groupAttrs}">
@@ -1361,6 +1334,10 @@
         let skus = new Array();
         let curr = $(this).attr("skus").split(",");
 
+        // 当前被点击的所有sku组合数组放进去
+        skus.push(curr)
+
+        // 去掉同行的所有checked
         $(this).parent().parent().find(".sku_attr_value").removeClass("checked");
         $(this).addClass("checked");
         changeCheckedStyle();
@@ -1368,13 +1345,17 @@
         $("a[class='sku_attr_value checked']").each(function () {
             skus.push($(this).attr("skus").split(","));
         });
+        console.log(skus)
+        console.log($(skus[0]).filter(skus[1])[0])
 
         let filterEle = skus[0];
         for (let i = 1; i < skus.length; i++) {
-            filterEle = $(filterEle).filter(skus[i])[0];
+            filterEle = $(filterEle).filter(skus[i]);
         }
+        console.log(filterEle[0])
 
-        location.href = "http://item.gulimall.com/" + filterEle + ".html";
+
+        location.href = "http://item.gulimall.com/" + filterEle[0] + ".html";
 
         return false;
     });

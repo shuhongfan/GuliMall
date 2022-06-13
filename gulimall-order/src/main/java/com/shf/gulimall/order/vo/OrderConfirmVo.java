@@ -32,10 +32,14 @@ public class OrderConfirmVo {
     /** 防止重复提交的令牌 **/
     @Getter @Setter
     private String orderToken;
-
     @Getter @Setter
     Map<Long,Boolean> stocks;
 
+
+    /**
+     * 商品总件数
+     * @return
+     */
     public Integer getCount() {
         Integer count = 0;
         if (items != null && items.size() > 0) {

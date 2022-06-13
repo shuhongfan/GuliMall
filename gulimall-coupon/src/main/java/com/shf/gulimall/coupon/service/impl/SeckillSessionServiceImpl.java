@@ -48,20 +48,29 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
         return new PageUtils(page);
     }
 
+    /**
+     * 查询最近三天需要参加秒杀商品的信息
+     * @return
+     */
     @Override
     public List<SeckillSessionEntity> getLates3DaySession() {
 
         //计算最近三天
-        //查出这三天参与秒杀活动的商品
-        List<SeckillSessionEntity> list = this.baseMapper.selectList(new QueryWrapper<SeckillSessionEntity>()
+        //查出这三天参与秒杀活动
+        List<SeckillSessionEntity> list = this.baseMapper.selectList(
+                new QueryWrapper<SeckillSessionEntity>()
                 .between("start_time", startTime(), endTime()));
 
+//        查询活动参加秒杀的商品
         if (list != null && list.size() > 0) {
             List<SeckillSessionEntity> collect = list.stream().map(session -> {
+//                当前活动id
                 Long id = session.getId();
                 //查出sms_seckill_sku_relation表中关联的skuId
-                List<SeckillSkuRelationEntity> relationSkus = seckillSkuRelationService.list(new QueryWrapper<SeckillSkuRelationEntity>()
+                List<SeckillSkuRelationEntity> relationSkus = seckillSkuRelationService.list(
+                        new QueryWrapper<SeckillSkuRelationEntity>()
                         .eq("promotion_session_id", id));
+//                设置所有参加活动的商品
                 session.setRelationSkus(relationSkus);
                 return session;
             }).collect(Collectors.toList());
@@ -72,7 +81,7 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
     }
 
     /**
-     * 当前时间
+     * 当前时间  格式化后的日期
      * @return
      */
     private String startTime() {
@@ -81,12 +90,11 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
         LocalDateTime start = LocalDateTime.of(now, min);
 
         //格式化时间
-        String startFormat = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return startFormat;
+        return start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
-     * 结束时间
+     * 结束时间  格式化后的日期
      * @return
      */
     private String endTime() {
@@ -96,32 +104,7 @@ public class SeckillSessionServiceImpl extends ServiceImpl<SeckillSessionDao, Se
         LocalDateTime end = LocalDateTime.of(plus, max);
 
         //格式化时间
-        String endFormat = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return endFormat;
-    }
-
-    public static void main(String[] args) {
-        // LocalDate now = LocalDate.now();
-        // LocalDate plus = now.plusDays(2);
-        // LocalDateTime now1 = LocalDateTime.now();
-        // LocalTime now2 = LocalTime.now();
-        //
-        // LocalTime max = LocalTime.MAX;
-        // LocalTime min = LocalTime.MIN;
-        //
-        // LocalDateTime start = LocalDateTime.of(now, min);
-        // LocalDateTime end = LocalDateTime.of(plus, max);
-        //
-        // System.out.println(now);
-        // System.out.println(now1);
-        // System.out.println(now2);
-        // System.out.println(plus);
-        //
-        // System.out.println(start);
-        // System.out.println(end);
-
-        // System.out.println(startTime());
-        // System.out.println(endTime());
+        return end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }

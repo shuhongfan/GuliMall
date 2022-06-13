@@ -2,6 +2,7 @@ package com.shf.gulimall.auth.vo;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -24,11 +25,19 @@ public class UserRegisterVo {
     @Length(min = 6,max = 18,message = "密码必须是6—18位字符")
     private String password;
 
+    @NotEmpty(message = "密码必须填写")
+    @Length(min = 6,max = 18,message = "密码必须是6—18位字符")
+    private String password2;
+
     @NotEmpty(message = "手机号不能为空")
     @Pattern(regexp = "^[1]([3-9])[0-9]{9}$", message = "手机号格式不正确")
     private String phone;
 
     @NotEmpty(message = "验证码不能为空")
     private String code;
+
+    @NotEmpty(message = "必须同意协议")
+    @Pattern(regexp = "^on$", message = "必须同意协议")
+    private String agreement;
 
 }

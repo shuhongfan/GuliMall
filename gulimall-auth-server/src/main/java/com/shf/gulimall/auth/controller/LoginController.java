@@ -95,7 +95,14 @@ public class LoginController {
 
         //如果有错误回到注册页面
         if (result.hasErrors()) {
-            Map<String, String> errors = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
+            Map<String, String> errors =
+                    result.getFieldErrors().stream().collect(
+                            Collectors.toMap(
+                                    FieldError::getField,
+                                    FieldError::getDefaultMessage,(item1,item2) ->item1));
+            if (!vos.getPassword().equals(vos.getPassword2())){
+                errors.put("password2", "两次输入的密码不一致");
+            }
             attributes.addFlashAttribute("errors",errors);
 
             //效验出错回到注册页面

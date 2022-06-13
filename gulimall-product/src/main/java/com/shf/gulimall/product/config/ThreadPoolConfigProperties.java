@@ -2,6 +2,7 @@ package com.shf.gulimall.product.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @Description:
@@ -11,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  **/
 
 @ConfigurationProperties(prefix = "gulimall.thread")
-// @Component
+//@Component
 @Data
 public class ThreadPoolConfigProperties {
 

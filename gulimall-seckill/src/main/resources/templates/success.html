@@ -26,12 +26,16 @@
 
         <ul class="hd_wrap_right">
             <li>
-                <a th:if="${session.loginUser == null}" href="http://cart.gulimall.comhttp://auth.gulimall.com/login.html" class="li_2">请登录</a>
                 <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
             </li>
             <li>
-                <a th:if="${session.loginUser == null}" href="http://cart.gulimall.comhttp://auth.gulimall.com/reg.html" style="color: red;">免费注册</a>
+                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
             </li>
+            <li>
+                <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
+            </li>
+            <span>|</span>
 
             <li>
                 <a href="http://cart.gulimall.com/javascript:;">我的订单</a>

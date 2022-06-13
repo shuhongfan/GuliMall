@@ -93,7 +93,7 @@ public class PurchaseServiceImpl extends ServiceImpl<PurchaseDao, PurchaseEntity
 
         purchaseDetailEntities.forEach((item) -> {
             if (!item.getStatus().equals(WareConstant.PurchaseDetailStatusEnum.CREATED.getCode())
-                && !item.getStatus().equals(WareConstant.PurchaseDetailStatusEnum.ASSIGNED.getCode())) {
+                    && !item.getStatus().equals(WareConstant.PurchaseDetailStatusEnum.ASSIGNED.getCode())) {
                 throw new IllegalArgumentException("正在采购，无法进行分配");
             }
         });

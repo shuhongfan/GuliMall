@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @createTime: 2020-07-09 19:23
  **/
 
-@EnableAsync
-@EnableScheduling
+@EnableAsync  // 开启异步任务
+@EnableScheduling  // 开启定时任务
 @Configuration
 public class ScheduledConfig {
 

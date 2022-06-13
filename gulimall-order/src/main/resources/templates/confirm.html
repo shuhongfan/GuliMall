@@ -7,6 +7,18 @@
     <link rel="stylesheet" type="text/css" href="/static/order/confirm/css/JD2.css"/>
 
     <title>订单结算页</title>
+    <style>
+        .top-1{
+            width: 1300px;
+            position: relative;
+        }
+        .top-1 span{
+            left: 30%;
+        }
+        .top-1,.section,.headera{
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -79,6 +91,7 @@
                                                       style="margin-bottom: 0px;margin-left3: 3px;"/><img
                     src="/static/order/confirm/img/06.png"/></li>
             <li>|</li>
+
             <li class="spacer"></li>
             <li><a href="http://member.gulimall.com/memberOrder.html">我的订单</a></li>
             <li class="spacer"></li>
@@ -590,12 +603,14 @@
 <!--</div>-->
 <!--</div>-->
 <!--主体部分-->
-<p class="p1">填写并核对订单信息 <span style="color: red" th:if="${msg!=null}" th:text="${msg}"></span> </p>
+<p style="color:transparent">43434</p>
 <div class="section">
+    <p class="p1">填写并核对订单信息 <span style="color: red" th:if="${msg!=null}" th:text="${msg}"></span> </p>
+
     <!--收货人信息-->
     <div class="top-2">
         <span>收货人信息</span>
-        <span>新增收货地址</span>
+        <span onclick="addAddress()">新增收货地址</span>
     </div>
 
     <!--地址-->
@@ -711,13 +726,13 @@
 <div class="xia">
     <div class="qian">
         <p class="qian_y">
-            <span>[[${confirmOrderData.count}]]</span>
+            <span>共 <b>[[${confirmOrderData.count}]]</b></span>
             <span>件商品，总商品金额：</span>
-            <span class="rmb">￥[[${#numbers.formatDecimal(confirmOrderData.total, 1, 2)}]]</span>
+            <span class="rmb">￥<b>[[${#numbers.formatDecimal(confirmOrderData.total, 1, 2)}]]</b></span>
         </p>
         <p class="qian_y">
             <span>返现：</span>
-            <span class="rmb">  -￥0.00</span>
+            <span class="rmb">  -￥<b>0.00</b></span>
         </p>
         <p class="qian_y">
             <span>运费： </span>
@@ -725,11 +740,11 @@
         </p>
         <p class="qian_y">
             <span>服务费： </span>
-            <span class="rmb"> &nbsp ￥0.00</span>
+            <span class="rmb"> &nbsp ￥<b>0.00</b></span>
         </p>
         <p class="qian_y">
             <span>退换无忧： </span>
-            <span class="rmb"> &nbsp ￥0.00</span>
+            <span class="rmb"> &nbsp ￥<b>0.00</b></span>
         </p>
 
     </div>
@@ -1007,7 +1022,7 @@
 		$("#addrInput").val(addrId);
         $.get("http://gulimall.com/api/ware/wareinfo/fare?addrId=" + addrId, function (resp) {
             console.log(resp);
-            $("#fare").text(resp.data.fare);
+            $("#fare").text(resp.data.fare+".00");
             var total = [[${confirmOrderData.total}]];
 
             var payPrice = total * 1 + resp.data.fare * 1;
@@ -1019,6 +1034,10 @@
             $("#receiveAddress").text(resp.data.address.province + " " + resp.data.address.city + " " + " " + resp.data.address.region + resp.data.address.detailAddress);
             $("#receiver").text(resp.data.address.name);
         })
+    }
+    
+    function addAddress() {
+        window.location.href="/selectArea.html"
     }
 </script>
 </body>

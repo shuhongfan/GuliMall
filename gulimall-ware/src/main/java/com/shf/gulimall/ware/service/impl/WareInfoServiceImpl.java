@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Random;
 
 
 @Service("wareInfoService")
@@ -68,11 +69,10 @@ public class WareInfoServiceImpl extends ServiceImpl<WareInfoDao, WareInfoEntity
         if (memberAddressVo != null) {
             String phone = memberAddressVo.getPhone();
             //截取用户手机号码最后一位作为我们的运费计算
-            //1558022051
+//            1558022051
             String fare = phone.substring(phone.length() - 10, phone.length()-8);
-            BigDecimal bigDecimal = new BigDecimal(fare);
 
-            fareVo.setFare(bigDecimal);
+            fareVo.setFare(new BigDecimal(fare));
             fareVo.setAddress(memberAddressVo);
 
             return fareVo;

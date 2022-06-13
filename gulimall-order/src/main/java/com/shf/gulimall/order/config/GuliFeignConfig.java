@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 public class GuliFeignConfig {
 
+    /**
+     * 解决feign远程调用丢失请求头问题
+     * @return
+     */
     @Bean("requestInterceptor")
     public RequestInterceptor requestInterceptor() {
 
@@ -26,7 +30,8 @@ public class GuliFeignConfig {
             @Override
             public void apply(RequestTemplate template) {
                 //1、使用RequestContextHolder拿到刚进来的请求数据
-                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                ServletRequestAttributes requestAttributes =
+                        (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
                 if (requestAttributes != null) {
                     //老请求

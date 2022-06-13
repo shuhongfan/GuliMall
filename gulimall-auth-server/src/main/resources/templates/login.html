@@ -5,6 +5,12 @@
     <link rel="stylesheet" type="text/css" href="/static/login/JD_sass/JD1.css"/>
     <script src="/static/login/JD_js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
     <title>gulimall</title>
+    <style>
+        header,.top-2,.top-3,footer{
+            margin: 0 auto;
+        }
+
+    </style>
 </head>
 <body>
 <!--顶部logo-->
@@ -32,7 +38,6 @@
         <div class="si_top">
             <p>
                 <span>谷粒商城不会以任何理由要求您转账汇款，谨防诈骗。</span>
-                <span style="color: red" th:if="session.msg!=null"><br/>[[${session.msg}]]</span>
             </p>
 
         </div>
@@ -58,6 +63,8 @@
             <div class="error">
                 <div></div>
                 请输入账户名和密码
+                <span style="color: red;" th:if="session.msg!=null"><br/>[[${session.msg}]]</span>
+
             </div>
             <form action="/login" method="post">
                 <div style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'msg') ? errors.msg : '') : ''}"></div>
@@ -81,7 +88,7 @@
         <div class="si_out">
             <ul>
                 <li>
-                    <a href="https://api.weibo.com/oauth2/authorize?client_id=2077705774&response_type=code&redirect_uri=http://auth.gulimall.com/oauth2.0/weibo/success">
+                    <a href="https://api.weibo.com/oauth2/authorize?client_id=1398918556&response_type=code&redirect_uri=http://auth.gulimall.com/oauth2/weibo/success">
                         <img style="width: 50px;height: 18px;" src="/static/login/JD_img/weibo.png"/>
 <!--                        <span>weibo</span>-->
                     </a>

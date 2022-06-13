@@ -17,6 +17,10 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 @Configuration
 public class GulimallSessionConfig {
 
+    /**
+     * 自定义cookie
+     * @return
+     */
     @Bean
     public CookieSerializer cookieSerializer() {
 
@@ -24,12 +28,17 @@ public class GulimallSessionConfig {
 
         //放大作用域
         cookieSerializer.setDomainName("gulimall.com");
+//        设置cookie名字
         cookieSerializer.setCookieName("GULISESSION");
 
         return cookieSerializer;
     }
 
 
+    /**
+     * 修改redis序列化机制
+     * @return
+     */
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer();

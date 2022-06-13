@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>谷粒商城注册页面</title>
@@ -5960,73 +5960,82 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
     </div>
 </header>
 <section>
-	<form action="/register" method="post" class="one">
-<!--		<div style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'msg') ? errors.msg : '') : ''}">-->
-		<div class="register-box">
-			<label class="username_label">用 户 名
-				<input name="userName" maxlength="20" type="text" placeholder="您的用户名和登录名">
-			</label>
-			<div class="tips" style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'userName') ? errors.userName : '') : ''}">
+    <form action="/register" method="post" class="one">
+        <!--		<div style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'msg') ? errors.msg : '') : ''}">-->
+        <div class="register-box">
+            <label class="username_label">用 户 名
+                <input name="userName" maxlength="20" type="text" placeholder="您的用户名和登录名">
+            </label>
+            <div class="tips" style="color: red"
+                 th:text="${errors != null ? (#maps.containsKey(errors, 'userName') ? errors.userName : '') : ''}">
+
+            </div>
+        </div>
+        <div class="register-box">
+            <label class="other_label">设 置 密 码
+                <input name="password" maxlength="20" type="password" placeholder="建议至少使用两种字符组合">
+            </label>
+            <div class="tips" style="color: red"
+                 th:text="${errors != null ? (#maps.containsKey(errors, 'password') ? errors.password : '') : ''}">
+
+            </div>
+        </div>
+        <div class="register-box">
+            <label class="other_label">确 认 密 码
+                <input name="password2" maxlength="20" type="password" placeholder="请再次输入密码">
+            </label>
+			<div class="tips" style="color: red"
+				 th:text="${errors != null ? (#maps.containsKey(errors, 'password2') ? errors.password2 : '') : ''}">
 
 			</div>
-		</div>
-		<div class="register-box">
-			<label class="other_label">设 置 密 码
-				<input name="password" maxlength="20" type="password" placeholder="建议至少使用两种字符组合">
-			</label>
-			<div class="tips" style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'password') ? errors.password : '') : ''}">
+        </div>
+        <div class="register-box">
+            <label class="other_label">
+                <span>中国 0086∨</span>
+                <input name="phone" class="phone" id="phoneNum" maxlength="20" type="text" placeholder="建议使用常用手机">
+            </label>
+            <div class="tips" style="color: red"
+                 th:text="${errors != null ? (#maps.containsKey(errors, 'phone') ? errors.phone : '') : ''}">
+
+            </div>
+        </div>
+        <div class="register-box">
+            <label class="other_label">验 证 码
+                <input name="code" maxlength="20" type="text" placeholder="请输入验证码" class="caa">
+            </label>
+            <a id="sendCode" class=""> 发送验证码 </a>
+			<div class="tips" style="color: red"
+				 th:text="${errors != null ? (#maps.containsKey(errors, 'code') ? errors.code : '') : ''}">
 
 			</div>
-		</div>
-		<div class="register-box">
-			<label class="other_label">确 认 密 码
-				<input maxlength="20" type="password" placeholder="请再次输入密码">
-			</label>
-			<div class="tips">
+        </div>
+        <div class="arguement">
+            <input  name="agreement" type="checkbox" id="xieyi"> 阅读并同意
+            <a href="/static/reg/#">《谷粒商城用户注册协议》</a>
+            <a href="/static/reg/#">《隐私政策》</a>
+			<div class="tips" style="color: red"
+				 th:text="${errors != null ? (#maps.containsKey(errors, 'agreement') ? errors.agreement : '') : ''}">
 
 			</div>
-		</div>
-		<div class="register-box">
-			<label class="other_label">
-				<span>中国 0086∨</span>
-				<input name="phone" class="phone" id="phoneNum" maxlength="20" type="text" placeholder="建议使用常用手机">
-			</label>
-			<div class="tips" style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'phone') ? errors.phone : '') : ''}">
+            <br/>
+            <div class="submit_btn">
+                <button type="submit" id="submit_btn">立 即 注 册</button>
+            </div>
+        </div>
 
-			</div>
-		</div>
-		<div class="register-box">
-			<label class="other_label">验 证 码
-				<input name="code" maxlength="20" type="text" placeholder="请输入验证码" class="caa">
-			</label>
-			<a id="sendCode" class=""> 发送验证码 </a>
-		</div>
-		<div class="arguement">
-			<input type="checkbox" id="xieyi"> 阅读并同意
-			<a href="/static/reg/#">《谷粒商城用户注册协议》</a>
-			<a href="/static/reg/#">《隐私政策》</a>
-			<div class="tips" style="color: red" th:text="${errors != null ? (#maps.containsKey(errors, 'code') ? errors.code : '') : ''}">
-
-			</div>
-			<br/>
-			<div class="submit_btn">
-				<button type="submit" id="submit_btn">立 即 注 册</button>
-			</div>
-		</div>
-
-	</form>
-	<div class="two">
-		<div class="right_r">
-			<div class="right_r1">
-				<img src="/static/reg/img/a65a18e877a16246a92e1b755bd88a03_03.png"/>
-				<span>企业用户注册</span>
-			</div>
-			<div class="right_r2">
-				<img src="/static/reg/img/a65a18e877a16246a92e1b755bd88a03_06.png"/>
-				<span>INTERNATIONAL <br/> CUSTOMERS</span>
-			</div>
-		</div>
-	</div>
+    </form>
+    <div class="two">
+        <div class="right_r">
+            <div class="right_r1">
+                <img src="/static/reg/img/a65a18e877a16246a92e1b755bd88a03_03.png"/>
+                <span>企业用户注册</span>
+            </div>
+            <div class="right_r2">
+                <img src="/static/reg/img/a65a18e877a16246a92e1b755bd88a03_06.png"/>
+                <span>INTERNATIONAL <br/> CUSTOMERS</span>
+            </div>
+        </div>
+    </div>
 </section>
 <br/><br/>
 <hr>
@@ -6161,7 +6170,7 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
             if ($(this).val().length == 0) {
                 $(this).parent().next("div").text("");
                 $(this).parent().next("div").css("color", '#ccc');
-            } else if ($(this).val().substr(0, 3) != 138 && $(this).val().substr(0, 3) != 189 && $(this).val().substr(0, 3) != 139 && $(this).val().substr(0, 3) != 158 && $(this).val().substr(0, 3) != 188 && $(this).val().substr(0, 3) != 157 || $(this).val().length != 11) {
+            } else if (!/^[1]([3-9])[0-9]{9}$/.test($(this).val()) || $(this).val().length != 11) {
                 $(this).parent().next("div").text("手机号格式不正确");
                 $(this).parent().next("div").css("color", 'red');
             } else {
@@ -6170,30 +6179,30 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
         })
         // 	验证码
         //	 验证码刷新
-        function code() {
-            var str = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPLKJHGFDSAZXCVBNM";
-            var str1 = 0;
-            for (var i = 0; i < 4; i++) {
-                str1 += str.charAt(Math.floor(Math.random() * 62))
-            }
-            str1 = str1.substring(1)
-            $("#code").text(str1);
-        }
-
-        code();
-        $("#code").click(code);
+        // function code() {
+        //     var str = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPLKJHGFDSAZXCVBNM";
+        //     var str1 = 0;
+        //     for (var i = 0; i < 4; i++) {
+        //         str1 += str.charAt(Math.floor(Math.random() * 62))
+        //     }
+        //     str1 = str1.substring(1)
+        //     $("#code").text(str1);
+        // }
+		//
+        // code();
+        // $("#code").click(code);
         //	验证码验证
-        $('input').eq(4).blur(function () {
-            if ($(this).val().length == 0) {
-                $(this).parent().next().next("div").text("");
-                $(this).parent().next().next("div").css("color", '#ccc');
-            } else if ($(this).val().toUpperCase() != $("#code").text().toUpperCase()) {
-                $(this).parent().next().next("div").text("验证码不正确");
-                $(this).parent().next().next("div").css("color", 'red');
-            } else {
-                $(this).parent().next().next("div").text("");
-            }
-        })
+        // $('input').eq(4).blur(function () {
+        //     if ($(this).val().length == 0) {
+        //         $(this).parent().next().next("div").text("");
+        //         $(this).parent().next().next("div").css("color", '#ccc');
+        //     } else if ($(this).val().toUpperCase() != $("#code").text().toUpperCase()) {
+        //         $(this).parent().next().next("div").text("验证码不正确");
+        //         $(this).parent().next().next("div").css("color", 'red');
+        //     } else {
+        //         $(this).parent().next().next("div").text("");
+        //     }
+        // })
         //	提交按钮
         // $("#submit_btn").click(function (e) {
         //     for (var j = 0; j < 5; j++) {
@@ -6256,36 +6265,41 @@ Cookie</span>是由网页服务器存放在您的访问设备上的文本文件�
 
 
     $(function () {
-    	$("#sendCode").click(function () {
-			//2、倒计时
-			if($(this).hasClass("disabled")) {
-				//正在倒计时中
-			} else {
-				//1、给指定手机号发送验证码
-				$.get("/sms/sendCode?phone=" + $("#phoneNum").val(),function (data) {
-					if(data.code != 0) {
-						alert(data.msg);
-					}
-				});
-				timeoutChangeStyle();
-			}
-		});
+        $("#sendCode").click(function () {
+            if (/^[1]([3-9])[0-9]{9}$/.test($("#phoneNum").val())) {
+                //2、倒计时
+                if ($(this).hasClass("disabled")) {
+                    //正在倒计时中
+                } else {
+                    //1、给指定手机号发送验证码
+                    $.get("/sms/sendCode?phone=" + $("#phoneNum").val(), function (data) {
+                        if (data.code != 0) {
+                            alert(data.msg);
+                        }
+                    });
+                    timeoutChangeStyle();
+                }
+            } else {
+                alert("手机号码非法！")
+            }
+        });
     });
 
     var num = 60;
+
     function timeoutChangeStyle() {
-    	$("#sendCode").attr("class","disabled");
-    	if(num == 0) {
-			$("#sendCode").text("发送验证码");
-			num = 60;
-			$("#sendCode").attr("class","");
-		} else {
-			var str = num + "s 后再次发送";
-			$("#sendCode").text(str);
-			setTimeout("timeoutChangeStyle()",1000);
-		}
-		num --;
-	}
+        $("#sendCode").attr("class", "disabled");
+        if (num == 0) {
+            $("#sendCode").text("发送验证码");
+            num = 60;
+            $("#sendCode").attr("class", "");
+        } else {
+            var str = num + "s 后再次发送";
+            $("#sendCode").text(str);
+            setTimeout("timeoutChangeStyle()", 1000);
+        }
+        num--;
+    }
 
 </script>
 </body>

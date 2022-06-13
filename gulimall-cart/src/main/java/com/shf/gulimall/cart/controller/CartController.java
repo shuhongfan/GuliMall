@@ -65,8 +65,9 @@ public class CartController {
 
     /**
      * 添加商品到购物车
-     * attributes.addFlashAttribute():将数据放在session中，可以在页面中取出，但是只能取一次
-     * attributes.addAttribute():将数据放在url后面
+     * RedirectAttributes
+     *      attributes.addFlashAttribute():将数据放在session中，可以在页面中取出，但是只能取一次
+     *      attributes.addAttribute():将数据放在url后面
      * @return
      */
     @GetMapping(value = "/addCartItem")

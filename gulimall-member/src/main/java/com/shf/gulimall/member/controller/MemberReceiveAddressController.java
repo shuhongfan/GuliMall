@@ -4,6 +4,8 @@ import com.shf.common.utils.PageUtils;
 import com.shf.common.utils.R;
 import com.shf.gulimall.member.entity.MemberReceiveAddressEntity;
 import com.shf.gulimall.member.service.MemberReceiveAddressService;
+import com.shf.gulimall.member.vo.MemberAddressVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,19 @@ public class MemberReceiveAddressController {
     private MemberReceiveAddressService memberReceiveAddressService;
 
 
+    @PostMapping("/addLocation")
+    public R addLocation(@RequestBody MemberAddressVo memberAddressVo){
+        MemberReceiveAddressEntity addressEntity = new MemberReceiveAddressEntity();
+        BeanUtils.copyProperties(memberAddressVo, addressEntity);
+        addressEntity.setDefaultStatus(1);
+        boolean result = memberReceiveAddressService.save(addressEntity);
+        if (result){
+            return R.ok().put("data", memberAddressVo);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * 根据会员id查询会员的所有地址
      * @param memberId
@@ -39,6 +54,7 @@ public class MemberReceiveAddressController {
 
         return addressList;
     }
+
 
     /**
      * 列表

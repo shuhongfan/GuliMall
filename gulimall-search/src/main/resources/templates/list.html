@@ -64,11 +64,14 @@
         </b>
         <ul>
             <li>
-                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html" class="li_2">你好，请登录</a>
                 <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
             </li>
             <li>
-                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" style="color: red;">免费注册</a>
+                <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
+            </li>
+            <li>
+                <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
             </li>
             <span>|</span>
             <li>
@@ -1226,7 +1229,7 @@
                                 <span th:text="'￥' + ${product.skuPrice}">¥5199.00</span>
                             </p>
                             <p class="tab_JE">
-                                <a href="/static/search/#" th:utext="${product.skuTitle}">
+                                <a th:href="|http://item.gulimall.com/${product.skuId}.html|" th:utext="${product.skuTitle}">
                                     Apple iPhone 7 Plus (A1661) 32G 黑色 移动联通电信4G手机
                                 </a>
                             </p>

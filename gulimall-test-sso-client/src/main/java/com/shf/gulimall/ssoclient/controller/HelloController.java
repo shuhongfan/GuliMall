@@ -1,5 +1,6 @@
 package com.shf.gulimall.ssoclient.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,8 @@ import java.util.List;
 
 @Controller
 public class HelloController {
+    @Value("${sso.server.host}")
+    String ssoServerUrl;
 
 
     /**
@@ -37,11 +40,13 @@ public class HelloController {
 
 
     @GetMapping(value = "/employees")
-    public String employees(Model model, HttpSession session, @RequestParam(value = "token", required = false) String token) {
+    public String employees(Model model, HttpSession session,
+                            @RequestParam(value = "token", required = false) String token) {
 
         if (!StringUtils.isEmpty(token)) {
+//            去sso.com获取当前token真正对应用户的信息
             RestTemplate restTemplate=new RestTemplate();
-            ResponseEntity<String> forEntity = restTemplate.getForEntity("http://sso.mroldx.cn:8080/userinfo?token=" + token, String.class);
+            ResponseEntity<String> forEntity = restTemplate.getForEntity(ssoServerUrl+"/userinfo?token=" + token, String.class);
             String body = forEntity.getBody();
 
             session.setAttribute("loginUser", body);
@@ -50,7 +55,7 @@ public class HelloController {
 
         if (loginUser == null) {
 
-            return "redirect:" + "http://sso.mroldx.cn:8080/login.html"+"?redirect_url=http://localhost:8081/employees";
+            return "redirect:" + ssoServerUrl+"/login.html?redirect_url=http://client1.com:8081/employees";
         } else {
 
 

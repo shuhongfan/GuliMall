@@ -18,6 +18,14 @@ import java.util.UUID;
  * @createTime: 2020-06-29 19:56
  **/
 
+/**
+ *  单点登录
+ *
+ * 1. 给登录服务器留下登录痕迹
+ * 2.登录服务器要将token信息重定向的时候，带到url地址上
+ * 3.其他系统要处理url地址上的关键token，只要有，将token对应的用户保存到自己的session中
+ * 4.自己系统将用户保存在自己会话中。
+ */
 @Controller
 public class LoginController {
 
@@ -35,7 +43,9 @@ public class LoginController {
 
 
     @GetMapping("/login.html")
-    public String loginPage(@RequestParam("redirect_url") String url, Model model, @CookieValue(value = "sso_token", required = false) String sso_token) {
+    public String loginPage(@RequestParam("redirect_url") String url,
+                            Model model,
+                            @CookieValue(value = "sso_token", required = false) String sso_token) {
         if (!StringUtils.isEmpty(sso_token)) {
             return "redirect:" + url + "?token=" + sso_token;
         }
@@ -47,7 +57,10 @@ public class LoginController {
     }
 
     @PostMapping(value = "/doLogin")
-    public String doLogin(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("redirect_url") String url, HttpServletResponse response) {
+    public String doLogin(@RequestParam("username") String username,
+                          @RequestParam("password") String password,
+                          @RequestParam("redirect_url") String url,
+                          HttpServletResponse response) {
 
         //登录成功跳转，跳回到登录页
         if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {

@@ -166,19 +166,19 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         // Long spuId = info.getSpuId();
         // Long catalogId = info.getCatalogId();
 
+//        创建第二个异步任务
         //2、sku的图片信息    pms_sku_images
         CompletableFuture<Void> imageFuture = CompletableFuture.runAsync(() -> {
             List<SkuImagesEntity> imagesEntities = skuImagesService.getImagesBySkuId(skuId);
             skuItemVo.setImages(imagesEntities);
         }, executor);
 
+        //3、远程调用查询当前sku是否参与秒杀优惠活动
         CompletableFuture<Void> seckillFuture = CompletableFuture.runAsync(() -> {
-            //3、远程调用查询当前sku是否参与秒杀优惠活动
             R skuSeckilInfo = seckillFeignService.getSkuSeckilInfo(skuId);
             if (skuSeckilInfo.getCode() == 0) {
                 //查询成功
-                SeckillSkuVo seckilInfoData = skuSeckilInfo.getData("data", new TypeReference<SeckillSkuVo>() {
-                });
+                SeckillSkuVo seckilInfoData = skuSeckilInfo.getData("data", new TypeReference<SeckillSkuVo>() {});
                 skuItemVo.setSeckillSkuVo(seckilInfoData);
 
                 if (seckilInfoData != null) {
@@ -192,7 +192,9 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
 
 
         //等到所有任务都完成
-        CompletableFuture.allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture,seckillFuture).get();
+        CompletableFuture
+                .allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture,seckillFuture)
+                .get();
 
         return skuItemVo;
     }

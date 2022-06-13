@@ -31,16 +31,22 @@ public class ThreadTest {
 //        System.out.println("main...end..."+integer);
 
 //        我们以后在业务代码里面，以上三种启动线程的方式都不用。【将所有的线程异步任务都交给线程池执行】
+//        4. 线程池 ExecutorService
+//        区别
+//        1、2不能得到返回值，3可以获取返回值
+//        1 2 3 都不能控制资源
+//        4 可以控制资源,性能稳定
+
 //         service.execute(new Runable01());
 //         Future<Integer> submit = service.submit(new Callable01());
 //         submit.get();
 
-//        System.out.println("main......start.....");
-        // CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-        //     System.out.println("当前线程：" + Thread.currentThread().getId());
-        //     int i = 10 / 2;
-        //     System.out.println("运行结果：" + i);
-        // }, executor);
+        System.out.println("main......start.....");
+         CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+             System.out.println("当前线程：" + Thread.currentThread().getId());
+             int i = 10 / 2;
+             System.out.println("运行结果：" + i);
+         }, executor);
 
         /**
          * 方法完成后的处理
@@ -100,6 +106,26 @@ public class ThreadTest {
 
     private static void threadPool() {
 
+        /**
+         * 七大参数:
+         * int corePoolSize  核心线程数,一直存在除非allowCoreThreadTimeOut
+         * int maximumPoolSize: 最大线程数量
+         * long keepAliveTime: 存活时间,如果当前的的线程数量大于core数量,释放空闲的线程
+         * TimeUnit unit: 时间单位
+         * BlockingQueue<Runnable> workQueue:阻塞队列,只要线程有空闲,就回去队列里面取出新的任务继续执行
+         * ThreadFactory threadFactory: 线程的创建工程
+         * RejectedExecutionHandler handler: 如果队列满了,按照我们指定的拒绝策略执行任务
+         *
+         * 工作顺序
+         * 1.线程池,创建,准备好core数量的核心线程,准备接收任务
+         * 2.阻塞队列满了,就直接开始新线程执行,最大只能开到max指定的数量
+         * 3.max满了就用RejectedExecutionHandler拒绝任务
+         * 4.max都执行完成,有很多空闲,在指定时间keepAliveTime以后,释放max-core线程
+         *
+         * 一个线程池 core 7,max 20, queue 50,100并发进来怎样分配
+         * 7个会立即执行: 50个会进入队列,再开13个进行执行,剩下30个就使用拒绝策略.
+         *
+         */
         ExecutorService threadPool = new ThreadPoolExecutor(
                 200,
                 10,
@@ -109,7 +135,9 @@ public class ThreadTest {
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy()
         );
-
+//        Executors.newCachedThreadPool()  core时是0,所有都要回收你
+//        Executors.newFixedThreadPool() 固定大小,core=max 都不可回收
+//        Executors.newScheduledThreadPool() 定时任务线程池
         //定时任务的线程池
         ExecutorService service = Executors.newScheduledThreadPool(2);
     }

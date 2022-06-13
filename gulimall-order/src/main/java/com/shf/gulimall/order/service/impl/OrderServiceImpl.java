@@ -30,7 +30,7 @@ import com.shf.gulimall.order.feign.WmsFeignService;
 import com.shf.gulimall.order.service.OrderItemService;
 import com.shf.gulimall.order.service.OrderService;
 import com.shf.gulimall.order.to.OrderCreateTo;
-import com.shf.gulimall.order.to.SpuInfoVo;
+import com.shf.gulimall.order.vo.SpuInfoVo;
 import com.shf.gulimall.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -117,7 +117,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //TODO :获取当前线程请求头信息(解决Feign异步调用丢失请求头问题)
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
-        //开启第一个异步任务
+        //开启第一个异步任务  查询地址
         CompletableFuture<Void> addressFuture = CompletableFuture.runAsync(() -> {
 
             //每一个线程都来共享之前的请求数据
@@ -128,7 +128,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             confirmVo.setMemberAddressVos(address);
         }, threadPoolExecutor);
 
-        //开启第二个异步任务
+        //开启第二个异步任务  查询购物车
         CompletableFuture<Void> cartInfoFuture = CompletableFuture.runAsync(() -> {
 
             //每一个线程都来共享之前的请求数据
@@ -138,11 +138,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             List<OrderItemVo> currentCartItems = cartFeignService.getCurrentCartItems();
             confirmVo.setItems(currentCartItems);
             //feign在远程调用之前要构造请求，调用很多的拦截器
-        }, threadPoolExecutor).thenRunAsync(() -> {
+        }, threadPoolExecutor).thenRunAsync(() -> {  //  通过商品查询库存信息
             List<OrderItemVo> items = confirmVo.getItems();
             //获取全部商品的id
             List<Long> skuIds = items.stream()
-                    .map((itemVo -> itemVo.getSkuId()))
+                    .map((OrderItemVo::getSkuId))
                     .collect(Collectors.toList());
 
             //远程查询商品库存信息
@@ -151,7 +151,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
             if (skuStockVos != null && skuStockVos.size() > 0) {
                 //将skuStockVos集合转换为map
-                Map<Long, Boolean> skuHasStockMap = skuStockVos.stream().collect(Collectors.toMap(SkuStockVo::getSkuId, SkuStockVo::getHasStock));
+                Map<Long, Boolean> skuHasStockMap =
+                        skuStockVos.stream().collect(
+                                Collectors.toMap(SkuStockVo::getSkuId,
+                                SkuStockVo::getHasStock));
                 confirmVo.setStocks(skuHasStockMap);
             }
         },threadPoolExecutor);
@@ -165,10 +168,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //TODO 5、防重令牌(防止表单重复提交)
         //为用户设置一个token，三十分钟过期时间（存在redis）
         String token = UUID.randomUUID().toString().replace("-", "");
-        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX+memberResponseVo.getId(),token,30, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(
+                OrderConstant.USER_ORDER_TOKEN_PREFIX+memberResponseVo.getId(),token,
+                30,
+                TimeUnit.MINUTES);
         confirmVo.setOrderToken(token);
 
-
+//        全部完成后返回
         CompletableFuture.allOf(addressFuture,cartInfoFuture).get();
 
         return confirmVo;
@@ -199,10 +205,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         String orderToken = vo.getOrderToken();
 
-        //通过lure脚本原子验证令牌和删除令牌
-        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+        //通过Lua 脚本原子验证令牌和删除令牌
+//        验证令牌[令牌的对比和删除必须保证原子性]
+//        0令牌失败 -  1删除成功
+        Long result = redisTemplate.execute(
+                new DefaultRedisScript<Long>(script, Long.class),
                 Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberResponseVo.getId()),
-                orderToken);
+                orderToken
+        );
 
         if (result == 0L) {
             //令牌验证失败
@@ -689,6 +699,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderEntity.setPayAmount(totalPrice);
         orderEntity.setStatus(OrderStatusEnum.CREATE_NEW.getCode());
 
+        List<MemberAddressVo> address = memberFeignService.getAddress(orderTo.getMemberId());
+        MemberAddressVo addressVo = address.stream().filter(add -> add.getDefaultStatus() != null).collect(Collectors.toList()).get(0);
+        orderEntity.setReceiverName(addressVo.getName());
+        orderEntity.setReceiverPhone(addressVo.getPhone());
+        orderEntity.setReceiverProvince(addressVo.getProvince());
+        orderEntity.setReceiverCity(addressVo.getCity());
+        orderEntity.setReceiverRegion(addressVo.getRegion());
+        orderEntity.setReceiverDetailAddress(addressVo.getDetailAddress());
+
         //保存订单
         this.save(orderEntity);
 
@@ -708,9 +727,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderItem.setSpuBrand(spuInfoData.getBrandName());
         orderItem.setCategoryId(spuInfoData.getCatalogId());
 
+        R skuInfo = productFeignService.getSkuInfoBySkuId(orderTo.getSkuId());
+        SkuInfoVo skuInfoVo = skuInfo.getData("skuInfo", new TypeReference<SkuInfoVo>() {
+        });
+        orderItem.setSkuName(skuInfoVo.getSkuName());
+        orderItem.setSkuPic(skuInfoVo.getSkuDefaultImg());
+        orderItem.setSkuPic(skuInfoVo.getSkuDefaultImg());
+        orderItem.setSkuPrice(skuInfoVo.getPrice());
+        orderItem.setSkuPrice(skuInfoVo.getPrice());
+        orderItem.setSkuAttrsVals(orderItem.getSkuAttrsVals());
+        orderItem.setPromotionAmount(new BigDecimal(0));
+        orderItem.setCouponAmount(new BigDecimal(0));
+        orderItem.setIntegrationAmount(new BigDecimal(0));
+        orderItem.setGiftGrowth(orderTo.getSeckillPrice().intValueExact());
+        orderItem.setGiftIntegration(orderTo.getSeckillPrice().intValueExact());
         //保存订单项数据
         orderItemService.save(orderItem);
     }
+
 
 
     public static void main(String[] args) {

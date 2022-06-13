@@ -1,14 +1,9 @@
 package com.shf.gulimall.seckill.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-/**
- * @Description:
- * @Created: with IntelliJ IDEA.
- * @author: 夏沫止水
- * @createTime: 2020-07-09 18:49
- **/
 
 /**
  * 定时任务
@@ -18,12 +13,14 @@ import org.springframework.stereotype.Component;
  * 异步任务
  *      1、@EnableAsync:开启异步任务
  *      2、@Async：给希望异步执行的方法标注
+ *      自动配置类
+ *      TaskExecutionAutoConfiguration
  */
 
 @Slf4j
 @Component
-// @EnableAsync
-// @EnableScheduling
+// @EnableAsync  // 开启异步任务
+//@EnableScheduling
 public class HelloScheduled {
 
     /**
@@ -50,5 +47,10 @@ public class HelloScheduled {
     //     try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
     //
     // }
+
+//    @Scheduled(cron = "* * * * * ?")
+//    public void hello(){
+//        log.info("hello...");
+//    }
 
 }

@@ -61,6 +61,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         checkPhoneUnique(vo.getPhone());
         checkUserNameUnique(vo.getUserName());
 
+//        设置昵称
         memberEntity.setNickname(vo.getUserName());
         memberEntity.setUsername(vo.getUserName());
         //密码进行MD5加密
@@ -75,10 +76,16 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         this.baseMapper.insert(memberEntity);
     }
 
+    /**
+     * 检查手机号唯一
+     * @param phone
+     * @throws PhoneException
+     */
     @Override
     public void checkPhoneUnique(String phone) throws PhoneException {
 
-        Integer phoneCount = this.baseMapper.selectCount(new QueryWrapper<MemberEntity>().eq("mobile", phone));
+        Integer phoneCount = this.baseMapper.selectCount(
+                new QueryWrapper<MemberEntity>().eq("mobile", phone));
 
         if (phoneCount > 0) {
             throw new PhoneException();
@@ -86,10 +93,16 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
 
     }
 
+    /**
+     * 检查用户名唯一
+     * @param userName
+     * @throws UsernameException
+     */
     @Override
     public void checkUserNameUnique(String userName) throws UsernameException {
 
-        Integer usernameCount = this.baseMapper.selectCount(new QueryWrapper<MemberEntity>().eq("username", userName));
+        Integer usernameCount = this.baseMapper.selectCount(
+                new QueryWrapper<MemberEntity>().eq("username", userName));
 
         if (usernameCount > 0) {
             throw new UsernameException();
@@ -104,17 +117,19 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
 
         //1、去数据库查询 SELECT * FROM ums_member WHERE username = ? OR mobile = ?
         MemberEntity memberEntity = this.baseMapper.selectOne(new QueryWrapper<MemberEntity>()
-                .eq("username", loginacct).or().eq("mobile", loginacct));
+                .eq("username", loginacct)
+                .or()
+                .eq("mobile", loginacct));
 
         if (memberEntity == null) {
             //登录失败
             return null;
         } else {
             //获取到数据库里的password
-            String password1 = memberEntity.getPassword();
+            String passwordDB = memberEntity.getPassword();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             //进行密码匹配
-            boolean matches = passwordEncoder.matches(password, password1);
+            boolean matches = passwordEncoder.matches(password, passwordDB);
             if (matches) {
                 //登录成功
                 return memberEntity;

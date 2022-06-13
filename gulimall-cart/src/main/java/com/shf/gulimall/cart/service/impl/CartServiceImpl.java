@@ -81,7 +81,7 @@ public class CartServiceImpl implements CartService {
                 cartItemVo.setSkuAttrValues(skuSaleAttrValues);
             }, executor);
 
-            //等待所有的异步任务全部完成
+            // 阻塞等待所有的异步任务全部完成
             CompletableFuture.allOf(getSkuInfoFuture, getSkuAttrValuesFuture).get();
 
             String cartItemJson = JSON.toJSONString(cartItemVo);
@@ -122,6 +122,7 @@ public class CartServiceImpl implements CartService {
     public CartVo getCart() throws ExecutionException, InterruptedException {
 
         CartVo cartVo = new CartVo();
+//        通过线程获取用户信息
         UserInfoTo userInfoTo = CartInterceptor.toThreadLocal.get();
         if (userInfoTo.getUserId() != null) {
             //1、登录

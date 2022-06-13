@@ -1,9 +1,12 @@
 package com.shf.gulimall.order.feign;
 
+import com.shf.common.utils.R;
 import com.shf.gulimall.order.vo.MemberAddressVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -24,4 +27,8 @@ public interface MemberFeignService {
      */
     @GetMapping(value = "/member/memberreceiveaddress/{memberId}/address")
     List<MemberAddressVo> getAddress(@PathVariable("memberId") Long memberId);
+
+    @PostMapping("/member/memberreceiveaddress/addLocation")
+    public R addLocation(@RequestBody MemberAddressVo memberAddressVo);
+
 }

@@ -13,12 +13,13 @@
         <result property="catelogId" column="catelog_id"/>
     </resultMap>
 
+<!--    resultMap  返回集合里面元素的类型  只要有嵌套属性九月封装自定义结果-->
     <resultMap id="spuAttrGroup" type="com.shf.gulimall.product.vo.SpuItemAttrGroupVo">
         <result property="groupName" column="attr_group_name"/>
         <collection property="attrs" ofType="com.shf.gulimall.product.vo.Attr">
-            <result property="attrId" column="attr_id"></result>
-            <result property="attrName" column="attr_name"></result>
-            <result property="attrValue" column="attr_value"></result>
+            <result property="attrId" column="attr_id"/>
+            <result property="attrName" column="attr_name"/>
+            <result property="attrValue" column="attr_value"/>
         </collection>
     </resultMap>
 

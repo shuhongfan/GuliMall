@@ -5,12 +5,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * @Description:
- * @Created: with IntelliJ IDEA.
- * @author: 夏沫止水
- * @createTime: 2020-07-09 19:33
- **/
-
+ * 远程调用coupon优惠服务
+ */
 @FeignClient("gulimall-coupon")
 public interface CouponFeignService {
 

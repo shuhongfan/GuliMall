@@ -24,12 +24,14 @@
             </ul>
             <ul class="header-right">
                 <li>
-                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html" class="li_2">你好，请登录</a>
                     <a th:if="${session.loginUser != null}">欢迎, [[${session.loginUser.nickname}]]</a>
+                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/login.html">你好，请登录</a>
                 </li>
                 <li>
-                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html"
-                       style="color: red;">免费注册</a>
+                    <a th:if="${session.loginUser == null}" href="http://auth.gulimall.com/reg.html" class="li_2">免费注册</a>
+                </li>
+                <li>
+                    <a th:if="${session.loginUser != null}" href="http://auth.gulimall.com/loguot.html" class="li_2">立即退出</a>
                 </li>
                 <li class="spacer"></li>
                 <li><a href="http://order.gulimall.com/list.html">我的订单</a></li>
@@ -52,9 +54,9 @@
                 <a href="http://cart.gulimall.com/cart.html" class="one_left_link">购物车</a>
             </div>
             <div class="one_top_right">
-                <input type="text" class="one_right_txt" placeholder="" onfocus="this.placeholder=''"
+                <input id="searchText" type="text" class="one_right_txt" placeholder="" onfocus="this.placeholder=''"
                        onblur="this.placeholder='' ">
-                <input type="button" value="搜索" class="one_right_btn">
+                <input onclick="search();" type="button" value="搜索" class="one_right_btn">
             </div>
         </div>
         <div class="one_search_load" th:if="${session.loginUser == null}">
@@ -790,7 +792,10 @@
         location.href = "http://cart.gulimall.com/deleteItem?skuId=" + deleteId;
     }
 
-
+    function search() {
+        var keyword=$("#searchText").val()
+        window.location.href="http://search.gulimall.com/list.html?keyword="+keyword;
+    }
 
 </script>
 </html>
