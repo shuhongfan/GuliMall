@@ -17,13 +17,7 @@ import com.shf.common.utils.R;
 
 
 
-/**
- * 会员收藏的商品
- *
- * @author 夏沫止水
- * @email HeJieLin@gulimall.com
- * @date 2020-05-22 19:42:06
- */
+
 @RestController
 @RequestMapping("member/membercollectspu")
 public class MemberCollectSpuController {
